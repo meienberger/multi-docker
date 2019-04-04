@@ -33,7 +33,7 @@ const redisClient = redis.createClient({
 });
 const redisPublisher = redisClient.duplicate();
 
-// Express routes handler
+// Express routes handlers
 app.get("/", (req, res) => {
 	res.send("Hi");
 });

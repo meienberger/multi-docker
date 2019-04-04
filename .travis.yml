@@ -1,0 +1,22 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t deevibe/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker container run deevibe/react-test npm test -- --coverage
+
+after_success:
+    - docker image build -t deevibe/multi-client ./client
+    - docker image build -t deevibe/multi-nginx ./nginx
+    - docker image build -t deevibe/multi-server ./server
+    - docker image build -t deevibe/multi-worker ./worker
+    # Log in to the docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # Push to docker hub
+    - docker image push deevibe/multi-client
+    - docker image push deevibe/multi-nginx
+    - docker image push deevibe/multi-server
+    - docker image push deevibe/multi-worker

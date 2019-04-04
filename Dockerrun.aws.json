@@ -1,0 +1,36 @@
+{
+	"AWSEBDockerrunVersion": "2",
+	"containerDefinitions": [
+		{
+			"name": "client",
+			"image": "deevibe/multi-client",
+			"hostname": "client",
+			"essential": false
+		},
+		{
+			"name": "server",
+			"image": "deevibe/multi-server",
+			"hostname": "api",
+			"essential": false
+		},
+		{
+			"name": "worker",
+			"image": "deevibe/multi-worker",
+			"hostname": "worker",
+			"essential": false
+		},
+		{
+			"name": "nginx",
+			"image": "deevibe/multi-nginx",
+			"hostname": "nginx",
+			"essential": true,
+			"portMappings": [
+				{
+					"hostPort": 80,
+					"containerPort": 80
+				}
+			],
+			"links": ["server", "client"]
+		}
+	]
+}
